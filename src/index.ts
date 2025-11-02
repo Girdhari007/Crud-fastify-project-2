@@ -10,7 +10,7 @@ dotenv.config();
 
 const app = Fastify({ logger: true });
 
-// ✅ Register Swagger (OpenAPI)
+// Swagger registration
 app.register(swagger, {
     openapi: {
         info: {
@@ -21,7 +21,7 @@ app.register(swagger, {
     },
 });
 
-// ✅ Swagger UI (visual docs)
+// Swagger UI setup
 app.register(swaggerUI, {
     routePrefix: "/docs",       // UI available at /docs
     uiConfig: {
@@ -30,12 +30,13 @@ app.register(swaggerUI, {
     },
 });
 
-// ✅ Add your employee routes
-app.register(employeeRoutes, { prefix: "/employees" });
+// Register employee routes
+app.register(employeeRoutes);
 
-// ✅ OpenAPI JSON endpoint
+
 app.get("/documentation/json", async () => app.swagger());
 
+// Start the server
 const start = async () => {
     try {
         await app.listen({ port: Number(process.env.PORT) || 3000 });

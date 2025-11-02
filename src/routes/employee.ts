@@ -7,7 +7,7 @@ import { employeeController } from "../controllers/employee";
 export default async function employeeRoutes(fastify: FastifyInstance) {
     const app = fastify;
 
-    // ✅ CREATE EMPLOYEE
+    // Create a new employee
     app.post("/employees", {
         schema: {
             body: zodToJsonSchema(EmployeeSchemas.create),
@@ -24,7 +24,7 @@ export default async function employeeRoutes(fastify: FastifyInstance) {
         handler: employeeController.create,
     });
 
-    // ✅ GET ALL EMPLOYEES
+    // Get all employees
     app.get("/employees", {
         schema: {
             response: {
@@ -40,7 +40,7 @@ export default async function employeeRoutes(fastify: FastifyInstance) {
         handler: employeeController.getAll,
     });
 
-    // ✅ GET EMPLOYEE BY ID
+    // Get an employee by ID
     app.get("/employees/:id", {
         schema: {
             params: zodToJsonSchema(EmployeeSchemas.params),
@@ -57,7 +57,7 @@ export default async function employeeRoutes(fastify: FastifyInstance) {
         handler: employeeController.getOne,
     });
 
-    // ✅ UPDATE EMPLOYEE (PUT)
+    // Update an employee
     app.put("/employees/:id", {
         schema: {
             params: zodToJsonSchema(EmployeeSchemas.params),
@@ -75,7 +75,7 @@ export default async function employeeRoutes(fastify: FastifyInstance) {
         handler: employeeController.update,
     });
 
-    // ✅ PATCH EMPLOYEE
+    // Update an employee
     app.patch("/employees/:id", {
         schema: {
             params: zodToJsonSchema(EmployeeSchemas.params),
@@ -93,7 +93,7 @@ export default async function employeeRoutes(fastify: FastifyInstance) {
         handler: employeeController.patch,
     });
 
-    // ✅ DELETE EMPLOYEE
+    // Delete an employee
     app.delete("/employees/:id", {
         schema: {
             params: zodToJsonSchema(EmployeeSchemas.params),

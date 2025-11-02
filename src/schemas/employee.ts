@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+// Create and Update schemas
 const create = z.object({
     first_name: z.string().min(1),
     last_name: z.string().min(1),
@@ -16,6 +17,7 @@ const params = z.object({
     id: z.string().regex(/^\d+$/, "ID must be a number"),
 });
 
+// Response schema
 const response = z.object({
     employeeID: z.number(),
     first_name: z.string(),

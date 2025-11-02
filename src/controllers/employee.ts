@@ -4,6 +4,8 @@ import { Employee } from "../models/employee";
 import { success, error as errResponse } from "../utils/response";
 
 export class EmployeeController {
+
+    // Create a new employee
     async create(req: FastifyRequest<{ Body: Employee }>, reply: FastifyReply) {
         try {
             const created = await employeeService.createEmployee(req.body as Employee);
@@ -13,6 +15,7 @@ export class EmployeeController {
         }
     }
 
+    // Get all employees
     async getAll(req: FastifyRequest, reply: FastifyReply) {
         try {
             const employees = await employeeService.getEmployees();
@@ -22,6 +25,7 @@ export class EmployeeController {
         }
     }
 
+    // Get an employee by ID
     async getOne(
         req: FastifyRequest<{ Params: { id: string } }>,
         reply: FastifyReply
@@ -38,6 +42,7 @@ export class EmployeeController {
         }
     }
 
+    // Update an employee
     async update(
         req: FastifyRequest<{ Params: { id: string }; Body: Employee }>,
         reply: FastifyReply
@@ -55,6 +60,7 @@ export class EmployeeController {
         }
     }
 
+    // Partially update an employee
     async patch(
         req: FastifyRequest<{ Params: { id: string } }>,
         reply: FastifyReply
@@ -72,6 +78,7 @@ export class EmployeeController {
         }
     }
 
+    // Delete an employee
     async delete(
         req: FastifyRequest<{ Params: { id: string } }>,
         reply: FastifyReply
