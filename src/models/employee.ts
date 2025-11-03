@@ -15,9 +15,9 @@ export class EmployeeModel {
    async initialize() {
         const sql = `
       CREATE TABLE IF NOT EXISTS employees (
-        employeeID INT AUTO_INCREMENT PRIMARY KEY,
+        employeeID INT PRIMARY KEY AUTO_INCREMENT,
         first_name VARCHAR(100) NOT NULL,
-        last_name VARCHAR(100) NOT NULL,
+        last_name VARCHAR(100),
         email VARCHAR(100) NOT NULL UNIQUE,
         job_title VARCHAR(100) NOT NULL,
         salary DECIMAL(10, 2) NOT NULL,
@@ -29,22 +29,26 @@ export class EmployeeModel {
     }
 
     async create(emp: Employee) {
-        const sql = `
-      INSERT INTO employees (first_name, last_name, email, job_title, salary)
-      VALUES (?, ?, ?, ?, ?, NOW(), NOW())
-    `;
+  const sql = `
+    INSERT INTO employees ( first_name, last_name, email, job_title, salary)
+    VALUES (?, ?, ?, ?, ?)
+  `;
 
-        const [result]: any = await pool.execute(sql, [
-            emp.employeeID,
-            emp.first_name,
-            emp.last_name,
-            emp.email,
-            emp.job_title,
-            emp.salary,
-        ]);
+  const [result]: any = await pool.execute(sql, [
+    emp.first_name,
+    emp.last_name,
+    emp.email,
+    emp.job_title,
+    emp.salary
+  ]);
 
-        return { employeeID: result.insertId, ...emp };
-    }
+  const [row]: any = await pool.execute(
+  'SELECT * FROM employees WHERE employeeID = ?',
+  [result.insertId]
+);
+console.log(row);
+return row[0]; 
+}
 
     async findAll() {
         const [rows]: any = await pool.execute(`SELECT * FROM employees`);
@@ -60,11 +64,12 @@ export class EmployeeModel {
     }
 
     async update(id: number, emp: Employee) {
-        const sql = `
-      UPDATE employees 
-      SET first_name = ?, last_name = ?, email = ?, job_title = ?, salary = ?, created_at = NOW(), updated_at = NOW()
-      WHERE employeeID = ?
-    `;
+                // Don't overwrite created_at on update; only update updated_at
+                const sql = `
+            UPDATE employees 
+            SET first_name = ?, last_name = ?, email = ?, job_title = ?, salary = ?, updated_at = NOW()
+            WHERE employeeID = ?
+        `;
 
         await pool.execute(sql, [
             emp.first_name,

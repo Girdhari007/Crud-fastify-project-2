@@ -1,4 +1,3 @@
-// src/index.ts
 import Fastify from "fastify";
 import dotenv from "dotenv";
 import swagger from "@fastify/swagger";

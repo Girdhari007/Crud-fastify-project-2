@@ -7,6 +7,8 @@ const create = z.object({
     email: z.string().email(),
     job_title: z.string().min(1),
     salary: z.number().min(0),
+    created_at: z.string().optional(),
+    updated_at: z.string().optional(),
 });
 
 const update = create;
@@ -19,7 +21,7 @@ const params = z.object({
 
 // Response schema
 const response = z.object({
-    employeeID: z.number(),
+    employeeID: z.number().positive(),
     first_name: z.string(),
     last_name: z.string(),
     email: z.string(),
