@@ -3,12 +3,20 @@ import Fastify from "fastify";
 import dotenv from "dotenv";
 import swagger from "@fastify/swagger";
 import swaggerUI from "@fastify/swagger-ui";
-
+import {employeeModel} from "./models/employee";
 import employeeRoutes from "./routes/employee";
 
 dotenv.config();
 
 const app = Fastify({ logger: true });
+
+async function initializing() {
+  await employeeModel.initialize();
+  console.log("👍 Initialization completed");
+}
+
+initializing();
+
 
 // Swagger registration
 app.register(swagger, {
@@ -23,7 +31,7 @@ app.register(swagger, {
 
 // Swagger UI setup
 app.register(swaggerUI, {
-    routePrefix: "/docs",       // UI available at /docs
+    routePrefix: "/docs",      
     uiConfig: {
         docExpansion: "list",
         deepLinking: true,
@@ -40,8 +48,8 @@ app.get("/documentation/json", async () => app.swagger());
 const start = async () => {
     try {
         await app.listen({ port: Number(process.env.PORT) || 3000 });
-        console.log("Server running at http://localhost:3000");
-        console.log("Swagger UI --> http://localhost:3000/docs");
+        console.log("✌️ Server running at http://localhost:3000");
+        console.log("✌️ Swagger UI running at http://localhost:3000/docs");
     } catch (err) {
         console.error(err);
         process.exit(1);
